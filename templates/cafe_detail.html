@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}{{ cafe.name }} – Sip Santa Rosa{% endblock %}
+
+{% block content %}
+
+<!-- CAFE HERO -->
+<div class="detail-hero">
+  <img class="detail-hero-img"
+       src="{{ url_for('static', filename='images/' + cafe.image) }}"
+       alt="{{ cafe.name }}"
+       onerror="this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&h=500&fit=crop'">
+  <div class="detail-hero-overlay">
+    <div class="detail-hero-content">
+      <p class="hero-eyebrow">{{ cafe.price_range }}</p>
+      <h1 class="detail-hero-title">{{ cafe.name }}</h1>
+      <p class="detail-hero-addr">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        {{ cafe.address }}
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT BODY -->
+<div class="detail-body">
+
+  <!-- LEFT: Description + Info -->
+  <div class="detail-left">
+    <div class="detail-section">
+      <h2 class="detail-section-title">About</h2>
+      <p class="detail-desc">{{ cafe.description }}</p>
+    </div>
+
+    <div class="detail-info-grid">
+      <div class="info-card">
+        <span class="info-icon">🕐</span>
+        <div>
+          <p class="info-label">Hours</p>
+          <p class="info-value">{{ cafe.hours }}</p>
+        </div>
+      </div>
+      <div class="info-card">
+        <span class="info-icon">💰</span>
+        <div>
+          <p class="info-label">Price Range</p>
+          <p class="info-value">{{ cafe.price_range }}</p>
+        </div>
+      </div>
+      <div class="info-card">
+        <span class="info-icon">📍</span>
+        <div>
+          <p class="info-label">Address</p>
+          <p class="info-value">{{ cafe.address }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-tags-row">
+      {% for tag in cafe.tags.split(',') %}
+      <span class="tag tag-lg">{{ tag.strip() }}</span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- RIGHT: Menu -->
+  <div class="detail-right">
+    <h2 class="detail-section-title">Menu</h2>
+    {% if menu %}
+      {% for category, items in menu.items() %}
+      <div class="menu-category">
+        <h3 class="menu-cat-title">{{ category }}</h3>
+        <div class="menu-items">
+          {% for item in items %}
+          <div class="menu-item">
+            <div class="menu-item-info">
+              <p class="menu-item-name">{{ item.name }}</p>
+              {% if item.description %}
+              <p class="menu-item-desc">{{ item.description }}</p>
+              {% endif %}
+            </div>
+            <span class="menu-item-price">{{ item.price }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p class="no-menu">Menu information coming soon.</p>
+    {% endif %}
+  </div>
+
+</div>
+
+<!-- BACK LINK -->
+<div class="detail-back">
+  <a href="{{ url_for('cafes.cafe_list') }}" class="btn btn-outline">← Back to All Cafes</a>
+</div>
+
+{% endblock %}

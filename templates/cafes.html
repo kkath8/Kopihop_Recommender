@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}All Cafes – KopiHop{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+  <p class="section-label">Explore</p>
+  <h1 class="page-title">All Cafes in Santa Rosa</h1>
+  <p class="page-sub">{{ cafes|length }} cafes waiting to be discovered</p>
+</div>
+
+<div class="cafe-grid">
+  {% for cafe in cafes %}
+  <a href="{{ url_for('cafes.cafe_detail', cafe_id=cafe.id) }}" class="cafe-card">
+    <div class="cafe-card-img">
+      <img src="{{ url_for('static', filename='images/' + cafe.image) }}" alt="{{ cafe.name }}"
+           onerror="this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&h=400&fit=crop'">
+      <div class="cafe-card-overlay">
+        <span class="cafe-card-price">{{ cafe.price_range }}</span>
+      </div>
+    </div>
+    <div class="cafe-card-body">
+      <h3 class="cafe-card-name">{{ cafe.name }}</h3>
+      <p class="cafe-card-address">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        {{ cafe.address }}
+      </p>
+      <p class="cafe-card-desc">{{ cafe.description[:120] }}…</p>
+      <div class="cafe-card-tags">
+        {% for tag in cafe.tags.split(',')[:4] %}
+        <span class="tag">{{ tag.strip() }}</span>
+        {% endfor %}
+      </div>
+      <div class="cafe-card-footer">
+        <span class="cafe-hours">{{ cafe.hours }}</span>
+        <span class="cafe-cta">View Cafe →</span>
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+
+{% endblock %}

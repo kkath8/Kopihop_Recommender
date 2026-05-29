@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}KopiHop – Voice Cafe Finder{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-text">COFFEE</div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Santa Rosa, Laguna</p>
+    <h1 class="hero-title">Find Your Perfect<br>Cup of Coffee</h1>
+    <p class="hero-sub">Tell us what you're in the mood for — we'll find the right cafe for you.</p>
+  </div>
+</section>
+
+<!-- VOICE RECOMMENDER -->
+<section class="recommender">
+  <div class="recommender-card">
+    <div class="rec-header">
+      <span class="rec-badge">AI-Powered</span>
+      <h2 class="rec-title">Talk to us</h2>
+      <p class="rec-desc">Press the mic and describe what you're looking for. Cozy? WiFi? Quiet? Just say it.</p>
+    </div>
+
+    <!-- Voice Input Area -->
+    <div class="voice-area">
+      <button id="micBtn" class="mic-btn" aria-label="Start voice input">
+        <span class="mic-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="23"/>
+            <line x1="8" y1="23" x2="16" y2="23"/>
+          </svg>
+        </span>
+        <span class="mic-label" id="micLabel">Tap to speak</span>
+      </button>
+
+      <div class="transcript-box" id="transcriptBox">
+        <p id="transcriptText" class="transcript-placeholder">Your words will appear here…</p>
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div class="voice-status" id="voiceStatus"></div>
+  </div>
+</section>
+
+<!-- RESULTS SECTION -->
+<section class="results-section" id="resultsSection" style="display:none">
+  <div class="results-header">
+    <h2 class="results-title">Here's what we found for you</h2>
+    <p class="results-query" id="resultsQuery"></p>
+  </div>
+  <div class="results-grid" id="resultsGrid"></div>
+  <div class="results-cta">
+    <a href="{{ url_for('cafes.cafe_list') }}" class="btn btn-outline">Browse All Cafes →</a>
+  </div>
+</section>
+
+<!-- FEATURED CAFES STRIP -->
+<section class="featured">
+  <p class="section-label">Our cafes</p>
+  <h2 class="section-title">Santa Rosa's Finest</h2>
+  <div class="featured-strip">
+    {% for cafe in cafes %}
+    <a href="/cafes/{{ cafe.id }}" class="featured-item">
+      <div class="featured-img-wrap">
+        <img src="{{ url_for('static', filename='images/' + cafe.image) }}"
+             alt="{{ cafe.name }}"
+             onerror="this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&h=300&fit=crop'">
+      </div>
+      <p class="featured-name">{{ cafe.name }}</p>
+      <p class="featured-tag">{{ cafe.tags.split(',')[0] | capitalize }} · {{ cafe.tags.split(',')[1] | capitalize }}</p>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/voice.js') }}"></script>
+{% endblock %}
