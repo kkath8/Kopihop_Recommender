@@ -2,7 +2,7 @@
 -- KopiHop — PostgreSQL Schema Setup
 -- =====================================================
 
--- Enable pgvector 
+-- Enable pgvector
 CREATE EXTENSION IF NOT EXISTS vector;
 
 -- Drop existing tables (clean slate)
@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS menu_items    CASCADE;
 DROP TABLE IF EXISTS cafes         CASCADE;
 DROP TABLE IF EXISTS user_sessions CASCADE;
 
--- cafes 
+-- cafes
 CREATE TABLE cafes (
     id          SERIAL PRIMARY KEY,
     name        VARCHAR(200)  NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE cafes (
     embedding   vector(384)
 );
 
--- menu_items 
+-- menu_items
 CREATE TABLE menu_items (
     id          SERIAL PRIMARY KEY,
     cafe_id     INTEGER NOT NULL REFERENCES cafes(id) ON DELETE CASCADE,
@@ -43,7 +43,7 @@ CREATE TABLE user_sessions (
     last_seen      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- voice_logs 
+-- voice_logs
 CREATE TABLE voice_logs (
     id               SERIAL PRIMARY KEY,
     session_id       INTEGER REFERENCES user_sessions(id) ON DELETE SET NULL,
