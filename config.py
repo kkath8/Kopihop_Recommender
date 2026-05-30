@@ -1,6 +1,5 @@
 """
 config.py — KopiHop Configuration
-No paid API required. Uses free local AI (Ollama) with smart keyword fallback.
 """
 
 import os
