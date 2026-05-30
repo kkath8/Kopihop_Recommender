@@ -1,11 +1,11 @@
 from flask_sqlalchemy import SQLAlchemy
 
-# Single shared db instance used across the app
 db = SQLAlchemy()
 
 
 def init_db(app):
-    """Bind the SQLAlchemy instance to the Flask app."""
+    """Bind db to the Flask app and create all tables."""
     db.init_app(app)
     with app.app_context():
         db.create_all()
+        print("✅ Database ready.")
