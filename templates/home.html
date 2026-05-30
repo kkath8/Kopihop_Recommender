@@ -28,11 +28,10 @@
 
     <div class="mic-wrap">
 
-      <!-- Mic button with animated ring -->
+      <!-- Animated mic button -->
       <div class="mic-outer">
         <div id="micRing" data-state="idle"></div>
         <button id="micBtn" data-state="idle" aria-label="Start voice input">
-          <!-- Mic icon (shown when idle/listening) -->
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
             <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
@@ -42,25 +41,20 @@
         </button>
       </div>
 
-      <!-- Status text under mic -->
       <p id="micStatus">Tap the mic to start</p>
 
-      <!-- Live transcript -->
-      <div class="transcript-area empty" id="transcript"
-           data-placeholder="Your words will appear here…">
+      <div class="transcript-area empty" id="transcript">
         Your words will appear here…
       </div>
 
-      <!-- AI speech bubble -->
       <div class="ai-bubble" id="aiSpeechBubble">
-        <span class="ai-bubble-icon">☕︎ྀི</span>
+        <span class="ai-bubble-icon">☕︎ྀི </span>
         <p id="aiSpeechText"></p>
       </div>
 
-      <!-- Engine indicator -->
       <span id="engineBadge"></span>
 
-      <!-- Example queries the user can tap to trigger -->
+      <!-- Example chips -->
       <div>
         <p class="chips-label">Try saying:</p>
         <div class="example-chips">
@@ -72,21 +66,23 @@
             "Cafe with live band",
             "Open 24 hours",
             "May libre WiFi ba?",
-            "Mura lang sana"
+            "Mura lang sana",
+            "Outdoor garden cafe",
+            "Quick grab and go coffee"
           ] %}
-          <button class="chip" onclick="triggerVoiceQuery('{{ ex }}')">{{ ex }}</button>
+          <button class="chip" onclick="chipSearch('{{ ex }}')">{{ ex }}</button>
           {% endfor %}
         </div>
       </div>
 
-    </div><!-- /mic-wrap -->
-  </div><!-- /voice-card -->
+    </div>
+  </div>
 </section>
 
-<!-- RESULTS (hidden until a query runs) -->
+<!-- RESULTS -->
 <section class="results-section" id="resultsSection" style="display:none">
   <div class="results-header">
-    <h2 class="results-title">Here's what we found ☕︎ྀི</h2>
+    <h2 class="results-title">Here's what we found ☕︎ྀི </h2>
   </div>
   <div class="results-grid" id="resultsGrid"></div>
   <div class="results-cta">
@@ -94,7 +90,7 @@
   </div>
 </section>
 
-<!-- FEATURED CAFES STRIP -->
+<!-- FEATURED CAFES -->
 <section class="featured">
   <p class="section-label">All Cafes</p>
   <h2 class="section-title">Santa Rosa's Finest</h2>
@@ -125,90 +121,30 @@
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/voice.js') }}"></script>
 <script>
-  
-  function triggerVoiceQuery(text) {
+
+  function chipSearch(text) {
     const transcriptEl = document.getElementById("transcript");
     if (transcriptEl) {
       transcriptEl.textContent = text;
       transcriptEl.classList.remove("empty");
     }
-
-    // Dispatch to the recommend endpoint directly
-    fetch("/ai/recommend", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: text, input_method: "text", conversation_history: [] }),
-    })
-    .then(r => r.json())
-    .then(data => {
-      // Re-use voice.js internal functions via a custom event
-      document.dispatchEvent(new CustomEvent("kopihop:result", { detail: data }));
-    });
+    // Clear old saved state so this new search saves cleanly
+    sessionStorage.removeItem("kopihop_last");
+    // Use voice.js fetch function (handles TTS, bubble, sessionStorage save)
+    if (window.kopihopFetch) {
+      window.kopihopFetch(text, "text");
+    }
   }
 
-  // Listen for chip results and render them
-  document.addEventListener("kopihop:result", function(e) {
-    const data = e.detail;
-
-    // Show AI bubble
-    const bubble = document.getElementById("aiSpeechBubble");
-    const bubbleText = document.getElementById("aiSpeechText");
-    if (bubble && bubbleText && data.ai_message) {
-      bubbleText.textContent = data.ai_message;
-      bubble.classList.add("visible");
-
-      // Speak the AI message
-      if (window.speechSynthesis) {
-        const utt = new SpeechSynthesisUtterance(data.ai_message);
-        utt.lang = "en-PH"; utt.rate = 0.93;
-        window.speechSynthesis.cancel();
-        window.speechSynthesis.speak(utt);
-      }
-    }
-
-    // Render cards
-    const grid = document.getElementById("resultsGrid");
-    const section = document.getElementById("resultsSection");
-    if (!grid || !data.recommendations?.length) return;
-
-    grid.innerHTML = "";
-    const fallback = "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&h=400&fit=crop";
-
-    data.recommendations.forEach((cafe, i) => {
-      const card = document.createElement("a");
-      card.href = `/cafes/${cafe.id}`;
-      card.className = "result-card";
-      card.style.animationDelay = `${i * 0.12}s`;
-      card.innerHTML = `
-        <div class="rc-img">
-          <img src="/static/images/${cafe.image}" alt="${cafe.name}"
-               onerror="this.src='${fallback}'">
-        </div>
-        <div class="rc-body">
-          <div class="rc-top">
-            <span class="rc-name">${cafe.name}</span>
-            <span class="rc-price">${cafe.price_range || ""}</span>
-          </div>
-          <p class="rc-reason">${cafe.reason}</p>
-          <p class="rc-hours">🕐 ${cafe.hours || "Check cafe for hours"}</p>
-          <span class="rc-cta">View Cafe →</span>
-        </div>`;
-      grid.appendChild(card);
-    });
-
-    section.style.display = "block";
-    section.scrollIntoView({ behavior: "smooth", block: "start" });
-  });
-
-  // Clear "empty" placeholder when user starts speaking
+  // Keep transcript placeholder style correct
   const transcriptEl = document.getElementById("transcript");
   if (transcriptEl) {
-    const observer = new MutationObserver(() => {
-      if (transcriptEl.textContent.trim() && transcriptEl.textContent !== "Your words will appear here…") {
+    new MutationObserver(() => {
+      const txt = transcriptEl.textContent.trim();
+      if (txt && txt !== "Your words will appear here…") {
         transcriptEl.classList.remove("empty");
       }
-    });
-    observer.observe(transcriptEl, { childList: true, characterData: true, subtree: true });
+    }).observe(transcriptEl, { childList: true, characterData: true, subtree: true });
   }
 </script>
 {% endblock %}
