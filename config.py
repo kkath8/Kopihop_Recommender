@@ -1,19 +1,36 @@
+"""
+config.py — KopiHop Configuration
+No paid API required. Uses free local AI (Ollama) with smart keyword fallback.
+"""
+
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
 class Config:
-    # PostgreSQL connection
+    # ── PostgreSQL ─────────────────────────────────────────
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "DATABASE_URL",
-        "postgresql://postgres:password@localhost:5432/cafe_recommender"
+        "postgresql://postgres:Kath-PostgreSQL@localhost:5432/kopihop"
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        "pool_pre_ping": True,
+        "pool_size": 5,
+        "max_overflow": 10,
+        "pool_recycle": 300,
+    }
 
-    # Anthropic API
-    ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
-
-    # Flask
-    SECRET_KEY = os.getenv("SECRET_KEY", "cafe-recommender-secret-key")
+    # Flask 
+    SECRET_KEY = os.getenv("SECRET_KEY", "kopihop-change-this-in-production")
     DEBUG = os.getenv("DEBUG", "true").lower() == "true"
+
+    # Free AI (Ollama local LLM)
+    # If Ollama is not running, the app falls back to smart keyword matching.
+    OLLAMA_URL     = os.getenv("OLLAMA_URL", "http://localhost:11434")
+    OLLAMA_MODEL   = os.getenv("OLLAMA_MODEL", "llama3")   # or "mistral", "phi3"
+    USE_OLLAMA     = os.getenv("USE_OLLAMA", "true").lower() == "true"
+
+    # Voice Log
+    VOICE_LOG_ENABLED = True
