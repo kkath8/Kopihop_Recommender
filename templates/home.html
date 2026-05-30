@@ -5,73 +5,116 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-bg-text">COFFEE</div>
-  <div class="hero-content">
-    <p class="hero-eyebrow">Santa Rosa, Laguna</p>
+  <div class="hero-bg">COFFEE</div>
+  <div class="hero-inner">
+    <p class="hero-eye">Santa Rosa, Laguna</p>
     <h1 class="hero-title">Find Your Perfect<br>Cup of Coffee</h1>
-    <p class="hero-sub">Tell us what you're in the mood for — we'll find the right cafe for you.</p>
+    <p class="hero-sub">
+      Speak in English, Tagalog, or Taglish — KopiBot understands all three.
+    </p>
   </div>
 </section>
 
-<!-- VOICE RECOMMENDER -->
-<section class="recommender">
-  <div class="recommender-card">
-    <div class="rec-header">
-      <span class="rec-badge">AI-Powered</span>
-      <h2 class="rec-title">Talk to us</h2>
-      <p class="rec-desc">Press the mic and describe what you're looking for. Cozy? WiFi? Quiet? Just say it.</p>
-    </div>
+<!-- VOICE WIDGET -->
+<section class="voice-section">
+  <div class="voice-card">
 
-    <!-- Voice Input Area -->
-    <div class="voice-area">
-      <button id="micBtn" class="mic-btn" aria-label="Start voice input">
-        <span class="mic-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <span class="ai-badge">🎙 Voice-Powered AI</span>
+    <h2 class="vc-title">Just Speak</h2>
+    <p class="vc-sub">
+      Tap the mic and describe what you're looking for.
+      No typing needed — just talk!
+    </p>
+
+    <div class="mic-wrap">
+
+      <!-- Mic button with animated ring -->
+      <div class="mic-outer">
+        <div id="micRing" data-state="idle"></div>
+        <button id="micBtn" data-state="idle" aria-label="Start voice input">
+          <!-- Mic icon (shown when idle/listening) -->
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
             <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
             <line x1="12" y1="19" x2="12" y2="23"/>
-            <line x1="8" y1="23" x2="16" y2="23"/>
+            <line x1="8"  y1="23" x2="16" y2="23"/>
           </svg>
-        </span>
-        <span class="mic-label" id="micLabel">Tap to speak</span>
-      </button>
-
-      <div class="transcript-box" id="transcriptBox">
-        <p id="transcriptText" class="transcript-placeholder">Your words will appear here…</p>
+        </button>
       </div>
-    </div>
 
-    <!-- Status -->
-    <div class="voice-status" id="voiceStatus"></div>
-  </div>
+      <!-- Status text under mic -->
+      <p id="micStatus">Tap the mic to start</p>
+
+      <!-- Live transcript -->
+      <div class="transcript-area empty" id="transcript"
+           data-placeholder="Your words will appear here…">
+        Your words will appear here…
+      </div>
+
+      <!-- AI speech bubble -->
+      <div class="ai-bubble" id="aiSpeechBubble">
+        <span class="ai-bubble-icon">☕︎ྀི</span>
+        <p id="aiSpeechText"></p>
+      </div>
+
+      <!-- Engine indicator -->
+      <span id="engineBadge"></span>
+
+      <!-- Example queries the user can tap to trigger -->
+      <div>
+        <p class="chips-label">Try saying:</p>
+        <div class="example-chips">
+          {% for ex in [
+            "Quiet cafe for studying",
+            "Affordable cafe with WiFi",
+            "Barkada hangout late night",
+            "Romantic cafe for a date",
+            "Cafe with live band",
+            "Open 24 hours",
+            "May libre WiFi ba?",
+            "Mura lang sana"
+          ] %}
+          <button class="chip" onclick="triggerVoiceQuery('{{ ex }}')">{{ ex }}</button>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div><!-- /mic-wrap -->
+  </div><!-- /voice-card -->
 </section>
 
-<!-- RESULTS SECTION -->
+<!-- RESULTS (hidden until a query runs) -->
 <section class="results-section" id="resultsSection" style="display:none">
   <div class="results-header">
-    <h2 class="results-title">Here's what we found for you</h2>
-    <p class="results-query" id="resultsQuery"></p>
+    <h2 class="results-title">Here's what we found ☕︎ྀི</h2>
   </div>
   <div class="results-grid" id="resultsGrid"></div>
   <div class="results-cta">
-    <a href="{{ url_for('cafes.cafe_list') }}" class="btn btn-outline">Browse All Cafes →</a>
+    <a href="{{ url_for('cafes.cafe_list') }}" class="btn-outline">Browse All Cafes →</a>
   </div>
 </section>
 
 <!-- FEATURED CAFES STRIP -->
 <section class="featured">
-  <p class="section-label">Our cafes</p>
+  <p class="section-label">All Cafes</p>
   <h2 class="section-title">Santa Rosa's Finest</h2>
   <div class="featured-strip">
     {% for cafe in cafes %}
     <a href="/cafes/{{ cafe.id }}" class="featured-item">
-      <div class="featured-img-wrap">
-        <img src="{{ url_for('static', filename='images/' + cafe.image) }}"
-             alt="{{ cafe.name }}"
-             onerror="this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&h=300&fit=crop'">
+      <div class="fi-img">
+        <img
+          src="{{ url_for('static', filename='images/' + cafe.image) }}"
+          alt="{{ cafe.name }}"
+          onerror="this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&h=300&fit=crop'"
+        >
       </div>
-      <p class="featured-name">{{ cafe.name }}</p>
-      <p class="featured-tag">{{ cafe.tags.split(',')[0] | capitalize }} · {{ cafe.tags.split(',')[1] | capitalize }}</p>
+      <p class="fi-name">{{ cafe.name }}</p>
+      <p class="fi-tag">
+        {{ cafe.tags.split(',')[0] | capitalize }}
+        {% if cafe.tags.split(',') | length > 1 %}
+          · {{ cafe.tags.split(',')[1] | capitalize }}
+        {% endif %}
+      </p>
     </a>
     {% endfor %}
   </div>
@@ -81,4 +124,91 @@
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/voice.js') }}"></script>
+<script>
+  
+  function triggerVoiceQuery(text) {
+    const transcriptEl = document.getElementById("transcript");
+    if (transcriptEl) {
+      transcriptEl.textContent = text;
+      transcriptEl.classList.remove("empty");
+    }
+
+    // Dispatch to the recommend endpoint directly
+    fetch("/ai/recommend", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query: text, input_method: "text", conversation_history: [] }),
+    })
+    .then(r => r.json())
+    .then(data => {
+      // Re-use voice.js internal functions via a custom event
+      document.dispatchEvent(new CustomEvent("kopihop:result", { detail: data }));
+    });
+  }
+
+  // Listen for chip results and render them
+  document.addEventListener("kopihop:result", function(e) {
+    const data = e.detail;
+
+    // Show AI bubble
+    const bubble = document.getElementById("aiSpeechBubble");
+    const bubbleText = document.getElementById("aiSpeechText");
+    if (bubble && bubbleText && data.ai_message) {
+      bubbleText.textContent = data.ai_message;
+      bubble.classList.add("visible");
+
+      // Speak the AI message
+      if (window.speechSynthesis) {
+        const utt = new SpeechSynthesisUtterance(data.ai_message);
+        utt.lang = "en-PH"; utt.rate = 0.93;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utt);
+      }
+    }
+
+    // Render cards
+    const grid = document.getElementById("resultsGrid");
+    const section = document.getElementById("resultsSection");
+    if (!grid || !data.recommendations?.length) return;
+
+    grid.innerHTML = "";
+    const fallback = "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&h=400&fit=crop";
+
+    data.recommendations.forEach((cafe, i) => {
+      const card = document.createElement("a");
+      card.href = `/cafes/${cafe.id}`;
+      card.className = "result-card";
+      card.style.animationDelay = `${i * 0.12}s`;
+      card.innerHTML = `
+        <div class="rc-img">
+          <img src="/static/images/${cafe.image}" alt="${cafe.name}"
+               onerror="this.src='${fallback}'">
+        </div>
+        <div class="rc-body">
+          <div class="rc-top">
+            <span class="rc-name">${cafe.name}</span>
+            <span class="rc-price">${cafe.price_range || ""}</span>
+          </div>
+          <p class="rc-reason">${cafe.reason}</p>
+          <p class="rc-hours">🕐 ${cafe.hours || "Check cafe for hours"}</p>
+          <span class="rc-cta">View Cafe →</span>
+        </div>`;
+      grid.appendChild(card);
+    });
+
+    section.style.display = "block";
+    section.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  // Clear "empty" placeholder when user starts speaking
+  const transcriptEl = document.getElementById("transcript");
+  if (transcriptEl) {
+    const observer = new MutationObserver(() => {
+      if (transcriptEl.textContent.trim() && transcriptEl.textContent !== "Your words will appear here…") {
+        transcriptEl.classList.remove("empty");
+      }
+    });
+    observer.observe(transcriptEl, { childList: true, characterData: true, subtree: true });
+  }
+</script>
 {% endblock %}
