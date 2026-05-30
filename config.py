@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    # ── PostgreSQL ─────────────────────────────────────────
+    # PostgreSQL
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "DATABASE_URL",
         "postgresql://postgres:Kath-PostgreSQL@localhost:5432/kopihop"
@@ -21,12 +21,10 @@ class Config:
         "pool_recycle": 300,
     }
 
-    # Flask 
+    # Flask
     SECRET_KEY = os.getenv("SECRET_KEY", "kopihop-change-this-in-production")
     DEBUG = os.getenv("DEBUG", "true").lower() == "true"
 
-    # Free AI (Ollama local LLM)
-    # If Ollama is not running, the app falls back to smart keyword matching.
     OLLAMA_URL     = os.getenv("OLLAMA_URL", "http://localhost:11434")
     OLLAMA_MODEL   = os.getenv("OLLAMA_MODEL", "llama3")   # or "mistral", "phi3"
     USE_OLLAMA     = os.getenv("USE_OLLAMA", "true").lower() == "true"
