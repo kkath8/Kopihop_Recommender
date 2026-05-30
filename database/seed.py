@@ -1,5 +1,8 @@
 """
 database/seed.py — Populate the database with cafe data.
+
+Usage:
+    python database/seed.py
 """
 
 import sys, os
