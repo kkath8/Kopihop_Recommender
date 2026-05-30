@@ -1,184 +1,270 @@
-/**
- * voice.js — Voice-to-text + AI cafe recommendation
- * Uses the Web Speech API (no install needed, browser built-in)
+/*
+ * voice.js — KopiHop Pure Voice Assistant
  */
 
 (function () {
-  const micBtn        = document.getElementById('micBtn');
-  const micLabel      = document.getElementById('micLabel');
-  const transcriptText = document.getElementById('transcriptText');
-  const voiceStatus   = document.getElementById('voiceStatus');
-  const resultsSection = document.getElementById('resultsSection');
-  const resultsGrid   = document.getElementById('resultsGrid');
-  const resultsQuery  = document.getElementById('resultsQuery');
+  "use strict";
 
-  // ── Check browser support ──────────────────────────────
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  // ── DOM ──────────────────────────────────────────────────────────────────
+  const micBtn         = document.getElementById("micBtn");
+  const micRing        = document.getElementById("micRing");
+  const micStatus      = document.getElementById("micStatus");
+  const transcript     = document.getElementById("transcript");
+  const resultsSection = document.getElementById("resultsSection");
+  const resultsGrid    = document.getElementById("resultsGrid");
+  const aiSpeechBubble = document.getElementById("aiSpeechBubble");
+  const aiSpeechText   = document.getElementById("aiSpeechText");
+  const engineBadge    = document.getElementById("engineBadge");
 
-  if (!SpeechRecognition) {
-    micLabel.textContent = 'Not supported in this browser';
+  // ── State ────────────────────────────────────────────────────────────────
+  let isListening        = false;
+  let isSpeaking         = false;
+  let finalTranscript    = "";
+  let autoSubmitTimer    = null;
+  let conversationHistory = [];
+
+  // ── Speech Recognition ───────────────────────────────────────────────────
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SR) {
+    micStatus.textContent = "Voice not supported. Use Chrome or Edge.";
     micBtn.disabled = true;
-    voiceStatus.textContent = 'Please use Chrome or Edge for voice input.';
     return;
   }
 
-  // ── Setup recognition ──────────────────────────────────
-  const recognition = new SpeechRecognition();
-  recognition.lang = 'en-PH';       // Philippine English
+  const recognition          = new SR();
+  recognition.lang           = "en-PH";
   recognition.interimResults = true;
   recognition.maxAlternatives = 1;
-  recognition.continuous = false;
+  recognition.continuous     = false;
 
-  let isListening = false;
-  let finalTranscript = '';
-  let autoSubmitTimer = null;
-
-  // ── Mic button click ───────────────────────────────────
-  micBtn.addEventListener('click', () => {
-    if (isListening) {
-      recognition.stop();
+  // ── Mic Button ───────────────────────────────────────────────────────────
+  micBtn.addEventListener("click", () => {
+    if (isSpeaking) {
+      stopSpeaking();
       return;
     }
-    finalTranscript = '';
-    transcriptText.textContent = '';
-    transcriptText.classList.remove('transcript-placeholder');
-    recognition.start();
+    if (isListening) {
+      recognition.stop();
+    } else {
+      startListening();
+    }
   });
 
-  // ── Recognition events ─────────────────────────────────
+  function startListening() {
+    finalTranscript = "";
+    transcript.textContent = "";
+    hideResults();
+    hideAiBubble();
+    recognition.start();
+  }
+
+  // ── Recognition Events ───────────────────────────────────────────────────
   recognition.onstart = () => {
     isListening = true;
-    micBtn.classList.add('listening');
-    micLabel.textContent = 'Listening…';
-    voiceStatus.textContent = '🎙 Speak now — describe your ideal cafe';
-    resultsSection.style.display = 'none';
+    setMicState("listening");
+    micStatus.textContent = "Listening… speak now";
   };
 
-  recognition.onresult = (event) => {
-    let interim = '';
-    finalTranscript = '';
-
-    for (let i = event.resultIndex; i < event.results.length; i++) {
-      const text = event.results[i][0].transcript;
-      if (event.results[i].isFinal) {
-        finalTranscript += text;
-      } else {
-        interim += text;
-      }
+  recognition.onresult = (e) => {
+    let interim = "";
+    finalTranscript = "";
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const t = e.results[i][0].transcript;
+      e.results[i].isFinal ? (finalTranscript += t) : (interim += t);
     }
+    transcript.textContent = finalTranscript || interim;
 
-    transcriptText.textContent = finalTranscript || interim;
-
-    // Auto-submit 1.5 seconds after the user stops talking
     if (finalTranscript) {
       clearTimeout(autoSubmitTimer);
-      autoSubmitTimer = setTimeout(() => {
-        recognition.stop();
-      }, 1500);
+      autoSubmitTimer = setTimeout(() => recognition.stop(), 1500);
     }
   };
 
-  recognition.onerror = (event) => {
+  recognition.onerror = (e) => {
     isListening = false;
-    micBtn.classList.remove('listening');
-    micLabel.textContent = 'Tap to speak';
-
-    if (event.error === 'no-speech') {
-      voiceStatus.textContent = "We didn't catch anything. Try again!";
-    } else if (event.error === 'not-allowed') {
-      voiceStatus.textContent = '⚠️ Microphone access denied. Please allow it in browser settings.';
-    } else {
-      voiceStatus.textContent = `Error: ${event.error}`;
-    }
+    setMicState("idle");
+    const msgs = {
+      "no-speech":   "Didn't catch that. Tap and try again.",
+      "not-allowed": "Microphone blocked. Allow it in browser settings.",
+      "network":     "Network error. Check your connection.",
+    };
+    micStatus.textContent = msgs[e.error] || "Error: " + e.error;
   };
 
   recognition.onend = () => {
     isListening = false;
-    micBtn.classList.remove('listening');
-    micLabel.textContent = 'Tap to speak';
-
     const query = finalTranscript.trim();
+
     if (query.length > 2) {
-      voiceStatus.textContent = '✨ Got it! Finding your perfect cafe…';
+      setMicState("thinking");
+      micStatus.textContent = "Finding your perfect cafe…";
       fetchRecommendations(query);
     } else {
-      voiceStatus.textContent = query ? 'Say a bit more and try again.' : '';
+      setMicState("idle");
+      micStatus.textContent = query ? "Say a bit more and try again." : "Tap the mic to start.";
     }
   };
 
-  // ── Fetch recommendations from server ─────────────────
+  // ── Fetch Recommendations ────────────────────────────────────────────────
   async function fetchRecommendations(query) {
-    setLoading(true);
-
     try {
-      const response = await fetch('/ai/recommend', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query })
+      const res = await fetch("/ai/recommend", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          query,
+          input_method:         "voice",
+          conversation_history: conversationHistory,
+        }),
       });
 
-      if (!response.ok) throw new Error('Server error');
-      const data = await response.json();
+      if (!res.ok) throw new Error("Server error");
+      const data = await res.json();
 
-      if (data.recommendations && data.recommendations.length > 0) {
-        renderResults(data.recommendations, query);
-        voiceStatus.textContent = `Found ${data.recommendations.length} great matches!`;
+      // Update conversation history
+      conversationHistory.push({ role: "user",      content: query });
+      conversationHistory.push({ role: "assistant", content: data.ai_message || "" });
+      if (conversationHistory.length > 16) conversationHistory = conversationHistory.slice(-16);
+
+      // Show AI speech bubble + speak it
+      if (data.ai_message) {
+        showAiBubble(data.ai_message);
+        speak(data.ai_message, () => {
+          // After AI finishes speaking, render cafe cards
+          if (data.recommendations?.length) {
+            renderCards(data.recommendations);
+          } else {
+            speak("Sorry, I couldn't find a match. Try saying something different!");
+          }
+          setMicState("idle");
+          micStatus.textContent = "Tap the mic to search again.";
+        });
       } else {
-        voiceStatus.textContent = 'No matches found. Try different words.';
+        if (data.recommendations?.length) renderCards(data.recommendations);
+        setMicState("idle");
+        micStatus.textContent = "Tap the mic to search again.";
       }
+
+      // Show engine badge
+      if (engineBadge) {
+        engineBadge.textContent = data.engine === "ollama" ? "🤖 AI" : "🔍︎ Smart Search";
+        engineBadge.style.display = "inline-block";
+      }
+
     } catch (err) {
       console.error(err);
-      voiceStatus.textContent = '⚠️ Something went wrong. Please try again.';
-    } finally {
-      setLoading(false);
+      speak("Something went wrong. Please try again.");
+      setMicState("idle");
+      micStatus.textContent = "Error. Try again.";
     }
   }
 
-  // ── Render result cards ────────────────────────────────
-  function renderResults(cafes, query) {
-    resultsQuery.textContent = `"${query}"`;
-    resultsGrid.innerHTML = '';
+  // Render Cafe Cards
+  function renderCards(cafes) {
+    resultsGrid.innerHTML = "";
+    const fallback = "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&h=400&fit=crop";
 
     cafes.forEach((cafe, i) => {
-      const img_src = `/static/images/${cafe.image}`;
-      const fallback = 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&h=400&fit=crop';
-
-      const card = document.createElement('a');
-      card.href = `/cafes/${cafe.id}`;
-      card.className = 'result-card';
-      card.style.animationDelay = `${i * 0.1}s`;
+      const card = document.createElement("a");
+      card.href      = `/cafes/${cafe.id}`;
+      card.className = "result-card";
+      card.style.animationDelay = `${i * 0.12}s`;
       card.innerHTML = `
-        <div class="result-card-img">
-          <img src="${img_src}" alt="${cafe.name}"
+        <div class="rc-img">
+          <img src="/static/images/${esc(cafe.image)}" alt="${esc(cafe.name)}"
                onerror="this.src='${fallback}'">
         </div>
-        <div class="result-card-body">
-          <p class="result-card-name">${cafe.name}</p>
-          <p class="result-reason">${cafe.reason}</p>
-          <span class="result-card-link">View Cafe →</span>
-        </div>
-      `;
+        <div class="rc-body">
+          <div class="rc-top">
+            <span class="rc-name">${esc(cafe.name)}</span>
+            <span class="rc-price">${esc(cafe.price_range || "")}</span>
+          </div>
+          <p class="rc-reason">${esc(cafe.reason)}</p>
+          <p class="rc-hours">🕐 ${esc(cafe.hours || "Check cafe for hours")}</p>
+          <span class="rc-cta">View Cafe →</span>
+        </div>`;
       resultsGrid.appendChild(card);
     });
 
-    resultsSection.style.display = 'block';
-    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    resultsSection.style.display = "block";
+    resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  // ── Loading state ─────────────────────────────────────
-  function setLoading(on) {
-    if (on) {
-      micBtn.disabled = true;
-      voiceStatus.innerHTML = `
-        <span style="display:inline-flex;align-items:center;gap:8px">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-          </svg>
-          Finding your perfect cafe…
-        </span>`;
-    } else {
-      micBtn.disabled = false;
-    }
+  // Text-to-Speech
+  function speak(text, onDone) {
+    if (!window.speechSynthesis) { onDone && onDone(); return; }
+    window.speechSynthesis.cancel();
+
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang  = "en-PH";
+    utt.rate  = 0.93;
+    utt.pitch = 1.05;
+
+    // Prefer a Filipino/English female voice if available
+    const voices = window.speechSynthesis.getVoices();
+    const pick = voices.find(v =>
+      v.lang === "en-PH" ||
+      v.lang.startsWith("fil") ||
+      v.lang.startsWith("tl") ||
+      (v.lang.startsWith("en") && /female|zira|samantha/i.test(v.name))
+    );
+    if (pick) utt.voice = pick;
+
+    utt.onstart = () => { isSpeaking = true; setMicState("speaking"); };
+    utt.onend   = () => { isSpeaking = false; onDone && onDone(); };
+    utt.onerror = () => { isSpeaking = false; onDone && onDone(); };
+
+    window.speechSynthesis.speak(utt);
   }
+
+  function stopSpeaking() {
+    window.speechSynthesis.cancel();
+    isSpeaking = false;
+    setMicState("idle");
+    micStatus.textContent = "Tap the mic to start.";
+  }
+
+  // Load voices async (some browsers need this)
+  if (window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+  }
+
+  // AI Speech Bubble
+  function showAiBubble(text) {
+    if (!aiSpeechBubble) return;
+    aiSpeechText.textContent = text;
+    aiSpeechBubble.classList.add("visible");
+  }
+  function hideAiBubble() {
+    if (!aiSpeechBubble) return;
+    aiSpeechBubble.classList.remove("visible");
+  }
+
+  // Visual State Machine
+  function setMicState(state) {
+    micBtn.dataset.state = state;
+    micRing.dataset.state = state;
+
+    const labels = {
+      idle:      "Tap to speak",
+      listening: "Listening…",
+      thinking:  "Thinking…",
+      speaking:  "Tap to stop",
+    };
+    micStatus.textContent = labels[state] || "";
+  }
+
+  // Helpers
+  function hideResults() { resultsSection.style.display = "none"; }
+
+  function esc(s) {
+    return String(s || "")
+      .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+
+  // Init
+  setMicState("idle");
 
 })();
