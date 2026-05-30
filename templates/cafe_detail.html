@@ -1,20 +1,21 @@
 {% extends "base.html" %}
-{% block title %}{{ cafe.name }} – Sip Santa Rosa{% endblock %}
+{% block title %}{{ cafe.name }} – KopiHop{% endblock %}
 
 {% block content %}
 
-<!-- CAFE HERO -->
 <div class="detail-hero">
-  <img class="detail-hero-img"
-       src="{{ url_for('static', filename='images/' + cafe.image) }}"
-       alt="{{ cafe.name }}"
-       onerror="this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&h=500&fit=crop'">
+  <img
+    class="detail-hero-img"
+    src="{{ url_for('static', filename='images/' + cafe.image) }}"
+    alt="{{ cafe.name }}"
+    onerror="this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&h=500&fit=crop'"
+  >
   <div class="detail-hero-overlay">
     <div class="detail-hero-content">
-      <p class="hero-eyebrow">{{ cafe.price_range }}</p>
+      <p class="hero-eye" style="color:var(--tan); margin-bottom:6px;">{{ cafe.price_range }}</p>
       <h1 class="detail-hero-title">{{ cafe.name }}</h1>
       <p class="detail-hero-addr">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15">
           <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
           <circle cx="12" cy="10" r="3"/>
         </svg>
@@ -24,10 +25,9 @@
   </div>
 </div>
 
-<!-- CONTENT BODY -->
 <div class="detail-body">
 
-  <!-- LEFT: Description + Info -->
+  <!-- LEFT: Info -->
   <div class="detail-left">
     <div class="detail-section">
       <h2 class="detail-section-title">About</h2>
@@ -39,7 +39,7 @@
         <span class="info-icon">🕐</span>
         <div>
           <p class="info-label">Hours</p>
-          <p class="info-value">{{ cafe.hours }}</p>
+          <p class="info-value">{{ cafe.hours if cafe.hours else "Contact cafe for hours" }}</p>
         </div>
       </div>
       <div class="info-card">
@@ -94,9 +94,8 @@
 
 </div>
 
-<!-- BACK LINK -->
 <div class="detail-back">
-  <a href="{{ url_for('cafes.cafe_list') }}" class="btn btn-outline">← Back to All Cafes</a>
+  <a href="{{ url_for('cafes.cafe_list') }}" class="btn-outline">← Back to All Cafes</a>
 </div>
 
 {% endblock %}
