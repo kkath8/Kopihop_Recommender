@@ -1,12 +1,5 @@
 """
 database/models.py — All database tables.
-
-Tables:
-  cafes          — cafe info + pgvector embedding
-  menu_items     — items per cafe
-  user_sessions  — anonymous browser sessions
-  voice_logs     — every voice query made
-  favorites      — saved cafes per session
 """
 
 from database.db import db
