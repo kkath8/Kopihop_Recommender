@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% block title %}KopiHop – Voice Cafe Finder{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">COFFEE</div>
+  <div class="hero-inner">
+    <p class="hero-eye">Santa Rosa, Laguna</p>
+    <h1 class="hero-title">Find Your Perfect<br>Cup of Coffee</h1>
+    <p class="hero-sub">
+      Speak in English, Tagalog, or Taglish — KopiBot understands all three.
+    </p>
+  </div>
+</section>
+
+<!-- VOICE WIDGET -->
+<section class="voice-section">
+  <div class="voice-card">
+
+    <span class="ai-badge">🎙 Voice-Powered AI</span>
+    <h2 class="vc-title">Just Speak</h2>
+    <p class="vc-sub">
+      Tap the mic and describe what you're looking for.
+      No typing needed — just talk!
+    </p>
+
+    <div class="mic-wrap">
+
+      <!-- Animated mic button -->
+      <div class="mic-outer">
+        <div id="micRing" data-state="idle"></div>
+        <button id="micBtn" data-state="idle" aria-label="Start voice input">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="23"/>
+            <line x1="8"  y1="23" x2="16" y2="23"/>
+          </svg>
+        </button>
+      </div>
+
+      <p id="micStatus">Tap the mic to start</p>
+
+      <div class="transcript-area empty" id="transcript">
+        Your words will appear here…
+      </div>
+
+      <div class="ai-bubble" id="aiSpeechBubble">
+        <span class="ai-bubble-icon">☕︎ྀི </span>
+        <p id="aiSpeechText"></p>
+      </div>
+
+      <span id="engineBadge"></span>
+
+      <!-- Example chips -->
+      <div>
+        <p class="chips-label">Try saying:</p>
+        <div class="example-chips">
+          {% for ex in [
+            "Quiet cafe for studying",
+            "Affordable cafe with WiFi",
+            "Barkada hangout late night",
+            "Romantic cafe for a date",
+            "Cafe with live band",
+            "Open 24 hours",
+            "May libre WiFi ba?",
+            "Mura lang sana",
+            "Outdoor garden cafe",
+            "Quick grab and go coffee"
+          ] %}
+          <button class="chip" onclick="chipSearch('{{ ex }}')">{{ ex }}</button>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="results-section" id="resultsSection" style="display:none">
+  <div class="results-header">
+    <h2 class="results-title">Here's what we found ☕︎ྀི </h2>
+  </div>
+  <div class="results-grid" id="resultsGrid"></div>
+  <div class="results-cta">
+    <a href="{{ url_for('cafes.cafe_list') }}" class="btn-outline">Browse All Cafes →</a>
+  </div>
+</section>
+
+<!-- FEATURED CAFES -->
+<section class="featured">
+  <p class="section-label">All Cafes</p>
+  <h2 class="section-title">Santa Rosa's Finest</h2>
+  <div class="featured-strip">
+    {% for cafe in cafes %}
+    <a href="/cafes/{{ cafe.id }}" class="featured-item">
+      <div class="fi-img">
+        <img
+          src="{{ url_for('static', filename='images/' + cafe.image) }}"
+          alt="{{ cafe.name }}"
+          onerror="this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&h=300&fit=crop'"
+        >
+      </div>
+      <p class="fi-name">{{ cafe.name }}</p>
+      <p class="fi-tag">
+        {{ cafe.tags.split(',')[0] | capitalize }}
+        {% if cafe.tags.split(',') | length > 1 %}
+          · {{ cafe.tags.split(',')[1] | capitalize }}
+        {% endif %}
+      </p>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/voice.js') }}"></script>
+<script>
+
+  function chipSearch(text) {
+    const transcriptEl = document.getElementById("transcript");
+    if (transcriptEl) {
+      transcriptEl.textContent = text;
+      transcriptEl.classList.remove("empty");
+    }
+    // Clear old saved state so this new search saves cleanly
+    sessionStorage.removeItem("kopihop_last");
+    // Use voice.js fetch function (handles TTS, bubble, sessionStorage save)
+    if (window.kopihopFetch) {
+      window.kopihopFetch(text, "text");
+    }
+  }
+
+  // Keep transcript placeholder style correct
+  const transcriptEl = document.getElementById("transcript");
+  if (transcriptEl) {
+    new MutationObserver(() => {
+      const txt = transcriptEl.textContent.trim();
+      if (txt && txt !== "Your words will appear here…") {
+        transcriptEl.classList.remove("empty");
+      }
+    }).observe(transcriptEl, { childList: true, characterData: true, subtree: true });
+  }
+</script>
+{% endblock %}

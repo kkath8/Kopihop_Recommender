@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}KopiHop{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<nav class="nav">
+  <a href="{{ url_for('main.home') }}" class="nav-logo">☕︎ྀི KopiHop</a>
+  <div class="nav-links">
+    <a href="{{ url_for('main.home') }}"
+       class="nav-link {% if request.endpoint == 'main.home' %}active{% endif %}">
+      Discover
+    </a>
+    <a href="{{ url_for('cafes.cafe_list') }}"
+       class="nav-link {% if request.endpoint == 'cafes.cafe_list' %}active{% endif %}">
+      All Cafes
+    </a>
+  </div>
+</nav>
+
+<main>{% block content %}{% endblock %}</main>
+
+<footer class="footer">
+  ☕︎ྀི KopiHop · Santa Rosa, Laguna
+</footer>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>
