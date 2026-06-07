@@ -21,10 +21,9 @@ class Cafe(db.Model):
     address     = db.Column(String(500), nullable=False)
     description = db.Column(Text, nullable=False)
     image       = db.Column(String(300), nullable=False)
-    tags        = db.Column(String(600))      
+    tags        = db.Column(String(600))       
     hours       = db.Column(String(200))
-    price_range = db.Column(String(50))        
-
+    price_range = db.Column(String(50))       
     if PGVECTOR_AVAILABLE:
         embedding = db.Column(Vector(384))
 
