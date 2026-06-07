@@ -423,7 +423,7 @@ CAFES = [
         "name": "Bigbrew",
         "address": "3 Garden Villas Subdivision, City of Santa Rosa, Laguna",
         "description": "A budget-friendly milk tea and coffee kiosk for quick everyday cravings and casual takeout.",
-        "image": "Bigbrew.jpg",
+        "image": "BigBrew.jpg",
         "tags": "cheap,milk-tea,takeout,budget,everyday,quick,kiosk,cheapest,affordable",
         "hours": "Daily: 1PM–10PM",
         "price_range": "₱39–₱100",
