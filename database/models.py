@@ -21,9 +21,9 @@ class Cafe(db.Model):
     address     = db.Column(String(500), nullable=False)
     description = db.Column(Text, nullable=False)
     image       = db.Column(String(300), nullable=False)
-    tags        = db.Column(String(600))       # comma-separated, English + Filipino
+    tags        = db.Column(String(600))      
     hours       = db.Column(String(200))
-    price_range = db.Column(String(50))        # e.g. "₱100–₱250"
+    price_range = db.Column(String(50))        
 
     if PGVECTOR_AVAILABLE:
         embedding = db.Column(Vector(384))
@@ -92,7 +92,7 @@ class VoiceLog(db.Model):
     query_text      = db.Column(Text, nullable=False)
     detected_lang   = db.Column(String(20), default="en")    # en / tl / taglish
     input_method    = db.Column(String(10), default="voice")  # voice / text
-    recommended_ids = db.Column(Text)                         # JSON e.g. "[3,7]"
+    recommended_ids = db.Column(Text)                         # JSON 
     created_at      = db.Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
 
