@@ -1,5 +1,8 @@
 """
 database/seed.py — Populate the database with cafe data.
+
+Usage:
+    python database/seed.py
 """
 
 import sys, os
@@ -27,11 +30,13 @@ CAFES = [
             {"category": "Coffee", "name": "Biscoff Latte", "price": "₱110"},
             {"category": "Coffee", "name": "Mocha Latte", "price": "₱110"},
             {"category": "Coffee", "name": "Salted Caramel", "price": "₱110"},
+
             {"category": "Food", "name": "Salad", "price": "₱80"},
             {"category": "Food", "name": "Pasta", "price": "₱80"},
             {"category": "Food", "name": "Chicken", "price": "₱80"},
             {"category": "Food", "name": "French Fries", "price": "₱80"},
             {"category": "Food", "name": "Sandwiches", "price": "₱80"},
+
             {"category": "Drinks", "name": "Butterscotch Frappe", "price": "₱150"},
             {"category": "Drinks", "name": "Wintermelon Milk Tea", "price": "₱150"},
             {"category": "Drinks", "name": "Matcha Milk Tea", "price": "₱150"},
@@ -46,11 +51,11 @@ CAFES = [
         "hours": "Daily: Open 24 Hours",
         "price_range": "₱100–₱300",
         "menu": [
-            {"category": "Coffee", "name": "Americano", "price": "₱120"},
-            {"category": "Coffee", "name": "Cafe Latte", "price": "₱120"},
-            {"category": "Coffee", "name": "Spanish Latte", "price": "₱120"},
-            {"category": "Coffee", "name": "White Chocolate Mocha", "price": "₱120"},
-            {"category": "Coffee", "name": "Signature GCC", "price": "₱120"},
+            {"category": "Coffee", "name": "Americano", "price": "₱110 - ₱150"},
+            {"category": "Coffee", "name": "Cafe Latte", "price": "₱120 - ₱170"},
+            {"category": "Coffee", "name": "Spanish Latte", "price": "₱100 - ₱130"},
+            {"category": "Coffee", "name": "White Chocolate Mocha", "price": "₱110 - ₱140"},
+            {"category": "Coffee", "name": "Signature GCC", "price": "₱120 - ₱180"},
         ]
     },
     {
@@ -62,14 +67,21 @@ CAFES = [
         "hours": "Mon–Sun: 11AM–11PM",
         "price_range": "₱100–₱250",
         "menu": [
-            {"category": "Coffee", "name": "Cafe Latte", "price": "₱120"},
-            {"category": "Coffee", "name": "Caramel Frappe", "price": "₱90"},
-            {"category": "Food", "name": "Carbonara", "price": "₱150"},
-            {"category": "Food", "name": "Chicken Sandwich", "price": "₱220"},
-            {"category": "Food", "name": "Cheesecake", "price": "₱180"},
-            {"category": "Food", "name": "Fries", "price": "₱75"},
-            {"category": "Drinks", "name": "Okinawa Milk Tea", "price": "₱130"},
-            {"category": "Drinks", "name": "Taro Milk Tea", "price": "₱80"},
+            {"category": "Coffee", "name": "Cafe Latte", "price": "₱120 - ₱160"},
+            {"category": "Coffee", "name": "Caramel Frappe", "price": "₱140 - ₱190"},
+            {"category": "Coffee", "name": "Americano", "price": "₱110 - ₱150"},
+            {"category": "Coffee", "name": "Mocha", "price": "₱130 - ₱170"},
+
+            {"category": "Food", "name": "Carbonara", "price": "₱180 - ₱250"},
+            {"category": "Food", "name": "Chicken Sandwich", "price": "₱150 - ₱220"},
+            {"category": "Food", "name": "Cheesecake", "price": "₱120 - ₱180"},
+            {"category": "Food", "name": "Fries", "price": "₱80 - ₱120"},
+
+            {"category": "Drinks", "name": "Okinawa Milk Tea", "price": "₱110 - ₱130"},
+            {"category": "Drinks", "name": "Taro Milk Tea", "price": "₱80 - ₱110"},
+            {"category": "Drinks", "name": "Blue Lemonade", "price": "₱100 - ₱140"},
+            {"category": "Drinks", "name": "Strawberry Soda", "price": "₱100 - ₱140"},
+            {"category": "Drinks", "name": "Cjocolate Drink", "price": "₱120 - ₱160"},
         ]
     },
     {
@@ -81,12 +93,20 @@ CAFES = [
         "hours": "Daily: 3PM–12AM",
         "price_range": "₱150–₱400",
         "menu": [
-            {"category": "Drinks", "name": "Spanish Latte", "price": "₱160"},
-            {"category": "Drinks", "name": "Matcha Latte", "price": "₱160"},
-            {"category": "Drinks", "name": "Oreo Frappe", "price": "₱160"},
-            {"category": "Food", "name": "Brownies", "price": "₱180"},
-            {"category": "Food", "name": "Red Velvet Cake", "price": "₱180"},
-            {"category": "Food", "name": "Cookies", "price": "₱180"},
+            {"category": "Coffee", "name": "Spanish Latte", "price": "₱140 - ₱170"},
+            {"category": "Coffee", "name": "Cafe Latte", "price": "₱130 - ₱170"},
+            {"category": "Coffee", "name": "Americano", "price": "₱120 - ₱150"},
+            {"category": "Coffee", "name": "Mocha", "price": "₱140 - ₱180"},
+
+            {"category": "Drinks", "name": "Matcha Latte", "price": "₱150 - ₱180"},
+            {"category": "Drinks", "name": "Oreo Frappe", "price": "₱160 - ₱190"},
+            {"category": "Drinks", "name": "Blue Lemonade", "price": "₱110 - ₱140"},
+            {"category": "Drinks", "name": "Strawberry Soda", "price": "₱120 - ₱150"},
+
+            {"category": "Food", "name": "Brownies", "price": "₱80 - ₱120"},
+            {"category": "Food", "name": "Red Velvet Cake", "price": "₱150 - ₱180"},
+            {"category": "Food", "name": "Cookies", "price": "₱80 - ₱120"},
+            {"category": "Food", "name": "Nachos", "price": "₱120 - ₱180"},
         ]
     },
     {
@@ -98,13 +118,21 @@ CAFES = [
         "hours": "Mon–Fri: 10AM–12AM | Sat: 1PM–12AM",
         "price_range": "₱100–₱200",
         "menu": [
-            {"category": "Coffee", "name": "Sea Salt Latte", "price": "₱100"},
-            {"category": "Coffee", "name": "Cold Brew", "price": "₱100"},
+            {"category": "Coffee", "name": "Sea Salt Latte", "price": "₱160 - ₱190"},
+            {"category": "Coffee", "name": "Cold Brew", "price": "₱100 - ₱190"},
             {"category": "Coffee", "name": "Caramel Macchiato", "price": "₱100"},
-            {"category": "Drinks", "name": "Dirty Matcha", "price": "₱100"},
-            {"category": "Drinks", "name": "Passion Fruit Soda", "price": "₱100"},
-            {"category": "Food", "name": "Cookies", "price": "₱150"},
-            {"category": "Food", "name": "Croffles", "price": "₱150"},
+            {"category": "Coffee", "name": "Americano", "price": "₱120 - ₱150"},
+            {"category": "Coffee", "name": "Spanish Latte", "price": "₱150 - ₱190"},
+
+            {"category": "Drinks", "name": "Dirty Matcha", "price": "₱170 - ₱210"},
+            {"category": "Drinks", "name": "Passion Fruit Soda", "price": "₱120 - ₱150"},
+            {"category": "Drinks", "name": "Strawberry Matcha", "price": "₱180 - ₱220"},
+            {"category": "Drinks", "name": "Hot Chocolate", "price": "₱120 - ₱150"},
+
+            {"category": "Food", "name": "Cookies", "price": "₱60 - ₱90"},
+            {"category": "Food", "name": "Croffles", "price": "₱140 - ₱190"},
+            {"category": "Food", "name": "Banana Bread", "price": "₱80 - ₱120"},
+            {"category": "Food", "name": "Cheesecake", "price": "₱120 - ₱180"},
         ]
     },
     {
@@ -116,12 +144,15 @@ CAFES = [
         "hours": "Daily: 3PM–3AM",
         "price_range": "₱200–₱400",
         "menu": [
-            {"category": "Coffee", "name": "Barako Coffee", "price": "₱100"},
-            {"category": "Drinks", "name": "Hot Chocolate", "price": "₱100"},
-            {"category": "Drinks", "name": "Iced Tea", "price": "₱100"},
-            {"category": "Food", "name": "Goto Special", "price": "₱150"},
-            {"category": "Food", "name": "Tapsilog", "price": "₱150"},
-            {"category": "Food", "name": "Sisig Meal", "price": "₱150"},
+            {"category": "Coffee", "name": "Barako Coffee", "price": "₱80 - ₱120"},
+            {"category": "Coffee", "name": "Cafe Latte", "price": "₱110 - ₱150"},
+
+            {"category": "Drinks", "name": "Hot Chocolate", "price": "₱90 - ₱130"},
+            {"category": "Drinks", "name": "Iced Tea", "price": "₱70 - ₱100"},
+
+            {"category": "Food", "name": "Goto Special", "price": "₱90 - ₱140"},
+            {"category": "Food", "name": "Tapsilog", "price": "₱120 - ₱180"},
+            {"category": "Food", "name": "Sisig Meal", "price": "₱130 - ₱190"},
         ]
     },
     {
@@ -133,12 +164,21 @@ CAFES = [
         "hours": "Daily: 10AM–12AM",
         "price_range": "₱100–₱250",
         "menu": [
-            {"category": "Drinks", "name": "Strawberry Latte", "price": "₱100"},
-            {"category": "Drinks", "name": "Matcha Milk Tea", "price": "₱100"},
-            {"category": "Drinks", "name": "Choco Frappe", "price": "₱100"},
-            {"category": "Food", "name": "Waffles", "price": "₱150"},
-            {"category": "Food", "name": "Cheesecake", "price": "₱150"},
-            {"category": "Food", "name": "Fries", "price": "₱150"},
+            {"category": "Coffee", "name": "Spanish Latte", "price": "₱120 - ₱160"},
+            {"category": "Coffee", "name": "Caramel Macchiato", "price": "₱120 - ₱160"},
+            {"category": "Coffee", "name": "Mocha Latte", "price": "₱120 - ₱170"},
+            {"category": "Coffee", "name": "Choco Frappe", "price": "₱130 - ₱170"},
+            {"category": "Coffee", "name": "Spanish Latte", "price": "₱110 - ₱150"},
+
+            {"category": "Drinks", "name": "Strawberry Latte", "price": "₱120 - ₱160"},
+            {"category": "Drinks", "name": "Matcha Milk Tea", "price": "₱110 - ₱150"},
+            {"category": "Drinks", "name": "Blueberry Soda", "price": "₱100 - ₱140"},
+            {"category": "Drinks", "name": "Green Apple", "price": "₱70 - ₱200"},
+            
+            {"category": "Food", "name": "Waffles", "price": "₱120 - ₱180"},
+            {"category": "Food", "name": "Cheesecake", "price": "₱130 - ₱190"},
+            {"category": "Food", "name": "Fries", "price": "₱80 - ₱120"},
+            {"category": "Food", "name": "Croffles", "price": "₱120 - ₱180"},
         ]
     },
     {
@@ -150,11 +190,19 @@ CAFES = [
         "hours": "Daily: 8AM–12AM",
         "price_range": "₱200–₱400",
         "menu": [
-            {"category": "Drinks", "name": "Spanish Latte", "price": "₱100"},
-            {"category": "Food", "name": "Wings", "price": "₱150"},
-            {"category": "Food", "name": "Sisig Rice", "price": "₱150"},
-            {"category": "Food", "name": "Burgers", "price": "₱150"},
-            {"category": "Food", "name": "Carbonara", "price": "₱150"},
+            {"category": "Coffee", "name": "Spanish Latte", "price": "₱130 - ₱170"},
+            {"category": "Coffee", "name": "Caramel Macchiato", "price": "₱140 - ₱180"},
+            {"category": "Coffee", "name": "Americano", "price": "₱120 - ₱150"},
+            {"category": "Coffee", "name": "Mocha Latte", "price": "₱140 - ₱180"},
+
+            {"category": "Drinks", "name": "Cookies & Cream Frappe", "price": "₱150 - ₱190"},
+            {"category": "Drinks", "name": "Mojito Soda", "price": "₱120 - ₱160"},
+            {"category": "Drinks", "name": "Strawberry Soda", "price": "₱110 - ₱150"},
+        
+            {"category": "Food", "name": "Wings", "price": "₱180 - ₱260"},
+            {"category": "Food", "name": "Sisig Rice", "price": "₱150 - ₱220"},
+            {"category": "Food", "name": "Burgers", "price": "₱180 - ₱250"},
+            {"category": "Food", "name": "Carbonara", "price": "₱190 - ₱260"},
         ]
     },
     {
@@ -166,12 +214,19 @@ CAFES = [
         "hours": "Daily: 6PM–3AM",
         "price_range": "₱150–₱500",
         "menu": [
-            {"category": "Drinks", "name": "Tiramisu Latte", "price": "₱100"},
-            {"category": "Drinks", "name": "Matcha Latte", "price": "₱100"},
-            {"category": "Drinks", "name": "Strawberry Milk", "price": "₱100"},
-            {"category": "Food", "name": "Red Velvet Cake", "price": "₱150"},
-            {"category": "Food", "name": "Truffle Pasta", "price": "₱150"},
-            {"category": "Food", "name": "Chicken Alfredo", "price": "₱150"},
+            {"category": "Coffee", "name": "Tiramisu Latte", "price": "₱170 - ₱220"},
+            {"category": "Coffee", "name": "Cafe Latte", "price": "₱150 - ₱190"},
+            {"category": "Coffee", "name": "Americano", "price": "₱130 - ₱170"},
+            {"category": "Coffee", "name": "Spanish Latte", "price": "₱160 - ₱210"},
+
+            {"category": "Drinks", "name": "Matcha Latte", "price": "₱160- ₱200"},
+            {"category": "Drinks", "name": "Strawberry Milk", "price": "₱140- ₱180"},
+            {"category": "Drinks", "name": "Fruit Soda", "price": "₱120- ₱160"},
+            {"category": "Drinks", "name": "Chocolate Drink", "price": "₱130- ₱170"},
+
+            {"category": "Food", "name": "Red Velvet Cake", "price": "₱150 - ₱200"},
+            {"category": "Food", "name": "Truffle Pasta", "price": "₱250 - ₱350"},
+            {"category": "Food", "name": "Chicken Alfredo", "price": "₱260 - ₱360"},
         ]
     },
     {
@@ -183,11 +238,18 @@ CAFES = [
         "hours": "Daily: 9AM–10PM",
         "price_range": "₱100–₱300",
         "menu": [
-            {"category": "Drinks", "name": "Brewed Coffee", "price": "₱100"},
-            {"category": "Drinks", "name": "Chocolate Shake", "price": "₱100"},
-            {"category": "Food", "name": "Chicken Silog", "price": "₱150"},
-            {"category": "Food", "name": "Clubhouse Sandwich", "price": "₱150"},
-            {"category": "Food", "name": "Spaghetti", "price": "₱150"},
+            {"category": "Coffee", "name": "Brewed Coffee", "price": "₱90 - ₱130"},
+            {"category": "Coffee", "name": "Cafe Latte", "price": "₱120 - ₱160"},
+            {"category": "Coffee", "name": "Americano", "price": "₱100 - ₱140"},
+
+            {"category": "Drinks", "name": "Chocolate Shake", "price": "₱100 - ₱"},
+            {"category": "Drinks", "name": "Strawberry Shake", "price": "₱120 - ₱160"}, 
+            {"category": "Drinks", "name": "Lemon Iced Tea", "price": "₱80 - ₱120"},  
+
+            {"category": "Food", "name": "Chicken Silog", "price": "₱120 - ₱180"},
+            {"category": "Food", "name": "Clubhouse Sandwich", "price": "₱150 - ₱220"},
+            {"category": "Food", "name": "Spaghetti", "price": "₱120 - ₱180"},
+            {"category": "Food", "name": "Fries", "price": "₱80 - ₱120"},
         ]
     },
     {
@@ -199,10 +261,17 @@ CAFES = [
         "hours": "Daily: 10AM–9PM",
         "price_range": "₱50–₱150",
         "menu": [
-            {"category": "Drinks", "name": "Kape Kastila", "price": "₱75"},
-            {"category": "Drinks", "name": "White Mocha", "price": "₱85"},
-            {"category": "Drinks", "name": "Matcha Latte", "price": "₱85"},
-            {"category": "Drinks", "name": "Iced Americano", "price": "₱65"},
+            {"category": "Coffee", "name": "Kape Kastila", "price": "₱50 - ₱70"},
+            {"category": "Coffee", "name": "Caramel Macchiato", "price": "₱80 - ₱100"},
+            {"category": "Coffee", "name": "White Mocha", "price": "₱70 - ₱90"},
+            {"category": "Coffee", "name": "Matcha Latte", "price": "₱85 - ₱100"},
+            {"category": "Coffee", "name": "Iced Americano", "price": "₱65"},
+
+            {"category": "Drinks", "name": "Choco Hazelnut", "price": "₱70 - ₱100"},
+            {"category": "Drinks", "name": "Milk Tea", "price": "₱70 - ₱90"},
+
+            {"category": "Food", "name": "Cookies", "price": "₱50 - ₱80"},
+            {"category": "Food", "name": "Light Snacks", "price": "₱50 - ₱90"},
         ]
     },
     {
@@ -214,11 +283,20 @@ CAFES = [
         "hours": "Mon–Fri: 4PM–12AM | Sat–Sun: 8AM–12AM",
         "price_range": "₱200–₱400",
         "menu": [
-            {"category": "Coffee", "name": "WDYT Signature Coffee", "price": "₱100"},
-            {"category": "Drinks", "name": "Matcha Latte", "price": "₱100"},
-            {"category": "Drinks", "name": "Milkshake", "price": "₱100"},
-            {"category": "Food", "name": "Nachos", "price": "₱150"},
-            {"category": "Food", "name": "Spam Rice Bowl", "price": "₱150"},
+            {"category": "Coffee", "name": "WDYT Signature Coffee", "price": "₱130 - ₱180"},
+            {"category": "Coffee", "name": "Americano", "price": "₱110 - ₱150"},
+            {"category": "Coffee", "name": "Spanish Latte", "price": "₱140 - ₱180"},
+            {"category": "Coffee", "name": "Caramel Machiatto", "price": "₱140 - ₱190"},
+
+            {"category": "Drinks", "name": "Matcha Latte", "price": "₱140 - ₱190"},
+            {"category": "Drinks", "name": "Milkshake", "price": "₱130 - ₱180"},
+            {"category": "Drinks", "name": "Blue Lemonade", "price": "₱110 - ₱150"},
+            {"category": "Drinks", "name": "Strawberry Soda", "price": "₱110 - ₱150"},
+
+            {"category": "Food", "name": "Nachos", "price": "₱120 - ₱180"},
+            {"category": "Food", "name": "Spam Rice Bowl", "price": "₱150 - ₱220"},
+            {"category": "Food", "name": "Fries", "price": "₱80 - ₱120"},
+            {"category": "Food", "name": "Chicken Pops", "price": "₱130 - ₱190"},
         ]
     },
     {
@@ -230,10 +308,17 @@ CAFES = [
         "hours": "Daily: 10AM–9PM",
         "price_range": "₱100–₱200",
         "menu": [
-            {"category": "Drinks", "name": "Velvet Creme Latte", "price": "₱130"},
-            {"category": "Drinks", "name": "Matcha Latte", "price": "₱130"},
-            {"category": "Drinks", "name": "Seasalt Brown Sugar Latte", "price": "₱130"},
-            {"category": "Drinks", "name": "Americano", "price": "₱100"},
+            {"category": "Coffee", "name": "Velvet Creme Latte", "price": "₱95 - ₱130"},
+            {"category": "Coffee", "name": "Seasalt Brown Sugar Latte", "price": "₱130 - ₱170"},
+            {"category": "Coffee", "name": "Americano", "price": "₱80 - ₱110"},
+
+            {"category": "Drinks", "name": "Matcha Latte", "price": "₱120 - ₱150"},
+            {"category": "Drinks", "name": "Pink Lemonade", "price": "₱90 - ₱120"},
+            {"category": "Drinks", "name": "Chocolate Drink", "price": "₱110 - ₱150"},
+
+            {"category": "Food", "name": "Pastries", "price": "₱80 - ₱150"},
+            {"category": "Food", "name": "Croissants", "price": "₱100 - ₱160"},
+            
         ]
     },
     {
@@ -245,11 +330,20 @@ CAFES = [
         "hours": "Daily: 10AM–11PM",
         "price_range": "₱200–₱400",
         "menu": [
-            {"category": "Drinks", "name": "Biscoff Latte", "price": "₱100"},
-            {"category": "Drinks", "name": "Matcha Latte", "price": "₱100"},
-            {"category": "Food", "name": "Cheesecake", "price": "₱150"},
-            {"category": "Food", "name": "Pasta", "price": "₱150"},
-            {"category": "Food", "name": "Chicken Wings", "price": "₱150"},
+            {"category": "Coffee", "name": "Biscoff Latte", "price": "₱140 - ₱190"},
+            {"category": "Coffee", "name": "Spanish Latte", "price": "₱140 - ₱190"},
+            {"category": "Coffee", "name": "Americano", "price": "₱120 - ₱150"},
+            {"category": "Coffee", "name": "Mocha Latte", "price": "₱140 - ₱190"},
+
+            {"category": "Drinks", "name": "Matcha Latte", "price": "₱140 - ₱190"},
+            {"category": "Drinks", "name": "Strawberry Soda", "price": "₱110 - ₱150"},
+            {"category": "Drinks", "name": "Chocolate Drink", "price": "₱120 - ₱160"},
+            {"category": "Drinks", "name": "Blue Lemonade", "price": "₱100 - ₱140"},
+
+            {"category": "Food", "name": "Cheesecake", "price": "₱130 - ₱190"},
+            {"category": "Food", "name": "Pasta", "price": "₱180 - ₱280"},
+            {"category": "Food", "name": "Chicken Wings", "price": "₱180 - ₱260"},
+            {"category": "Food", "name": "Cheesecake", "price": "₱130 - ₱190"},
         ]
     },
     {
@@ -261,13 +355,23 @@ CAFES = [
         "hours": "Daily: 2PM–2AM",
         "price_range": "₱200–₱400",
         "menu": [
-            {"category": "Coffee", "name": "Spanish Latte", "price": "₱100"},
-            {"category": "Coffee", "name": "Cold Brew", "price": "₱100"},
-            {"category": "Drinks", "name": "Matcha Latte", "price": "₱100"},
-            {"category": "Drinks", "name": "Cookies & Cream Frappe", "price": "₱100"},
-            {"category": "Food", "name": "Samgyupsal", "price": "₱150"},
-            {"category": "Food", "name": "Aglio Olio Pasta", "price": "₱150"},
-            {"category": "Food", "name": "Cheesecake", "price": "₱150"},
+            {"category": "Coffee", "name": "Spanish Latte", "price": "₱120 - ₱160"},
+            {"category": "Coffee", "name": "Caramel Macchiato", "price": "₱130 - ₱170"},
+            {"category": "Coffee", "name": "Cold Brew", "price": "₱100 - ₱150"},
+            {"category": "Coffee", "name": "Americano", "price": "₱110 - ₱150"},
+            {"category": "Coffee", "name": "Mocha", "price": "₱130 - ₱170"},
+
+            {"category": "Drinks", "name": "Matcha Latte", "price": "₱140 - ₱180"},
+            {"category": "Drinks", "name": "Cookies & Cream Frappe", "price": "₱140 - ₱190"},
+            {"category": "Drinks", "name": "Hot Chocolate", "price": "₱120 - ₱160"},
+            {"category": "Drinks", "name": "Strawberry Lemonade Freeze", "price": "₱120 - ₱160"},
+            
+            {"category": "Food", "name": "Samgyupsal", "price": "₱250 - ₱400"},
+            {"category": "Food", "name": "Aglio Olio Pasta", "price": "₱180 - ₱250"},
+            {"category": "Food", "name": "Cheesecake", "price": "₱120 - ₱180"},
+            {"category": "Food", "name": "Fries", "price": "₱90 - ₱150"},
+            {"category": "Food", "name": "Panini Sandwiches", "price": "₱160 - ₱220"},
+            {"category": "Food", "name": "Rice Meals", "price": "₱120 - ₱220"},
         ]
     },
     {
@@ -279,10 +383,17 @@ CAFES = [
         "hours": "Daily: 8:15AM–8:45PM",
         "price_range": "₱120–₱200",
         "menu": [
-            {"category": "Drinks", "name": "Vietnamese Latte", "price": "₱100"},
-            {"category": "Drinks", "name": "Dirty Matcha", "price": "₱100"},
-            {"category": "Drinks", "name": "Iced Americano", "price": "₱100"},
-            {"category": "Food", "name": "Croissants", "price": "₱150"},
+            {"category": "Coffee", "name": "Vietnamese Latte", "price": "₱120–₱170"},
+            {"category": "Coffee", "name": "Iced Americano", "price": "₱90–₱130"},
+            {"category": "Coffee", "name": "Spanish Latte", "price": "₱130–₱180"},
+            {"category": "Coffee", "name": "Caramel Latte", "price": "₱130–₱180"},
+ 
+            {"category": "Drinks", "name": "Dirty Matcha", "price": "₱140–₱190"},
+            {"category": "Drinks", "name": "Strawberry Latte", "price": "₱130–₱180"},
+            {"category": "Drinks", "name": "Lemonade", "price": "₱100–₱140"},
+ 
+            {"category": "Food", "name": "Croissants", "price": "₱90–₱140"},
+            {"category": "Food", "name": "Cookies", "price": "₱60–₱90"},
         ]
     },
     {
@@ -294,26 +405,37 @@ CAFES = [
         "hours": "Daily: 7AM–11:30PM",
         "price_range": "₱150–₱500",
         "menu": [
-            {"category": "Drinks", "name": "Caramel Macchiato", "price": "₱200"},
-            {"category": "Drinks", "name": "Java Chip Frappuccino", "price": "₱220"},
-            {"category": "Drinks", "name": "Matcha Latte", "price": "₱200"},
-            {"category": "Drinks", "name": "Cold Brew", "price": "₱195"},
-            {"category": "Food", "name": "Sandwiches", "price": "₱180"},
-            {"category": "Food", "name": "Pastries", "price": "₱120"},
+            {"category": "Coffee", "name": "Caramel Macchiato", "price": "₱180–₱210"},
+            {"category": "Coffee", "name": "Cold Brew", "price": "₱160–₱190"},
+            {"category": "Coffee", "name": "Caffe Latte", "price": "₱170–₱210"},
+            {"category": "Coffee", "name": "Java Chip Frappuccino", "price": "₱190–₱230"},
+ 
+            {"category": "Drinks", "name": "Matcha Latte", "price": "₱180–₱220"},
+            {"category": "Drinks", "name": "Pink Drink", "price": "₱170–₱210"},
+            {"category": "Drinks", "name": "Hot Chocolate", "price": "₱160–₱190"},
+ 
+            {"category": "Food", "name": "Cinnamon Danish", "price": "₱110–₱140"},
+            {"category": "Food", "name": "Sandwiches", "price": "₱180–₱260"},
+            {"category": "Food", "name": "Pastries", "price": "₱100–₱180"},
         ]
     },
     {
         "name": "Bigbrew",
         "address": "3 Garden Villas Subdivision, City of Santa Rosa, Laguna",
         "description": "A budget-friendly milk tea and coffee kiosk for quick everyday cravings and casual takeout.",
-        "image": "Bigbrew.jpg",
+        "image": "BigBrew.jpg",
         "tags": "cheap,milk-tea,takeout,budget,everyday,quick,kiosk,cheapest,affordable",
         "hours": "Daily: 1PM–10PM",
         "price_range": "₱39–₱100",
         "menu": [
-            {"category": "Drinks", "name": "Wintermelon Milk Tea", "price": "₱55"},
-            {"category": "Drinks", "name": "Dark Choco", "price": "₱60"},
-            {"category": "Drinks", "name": "Caramel Macchiato", "price": "₱65"},
+            {"category": "Coffee", "name": "Caramel Macchiato", "price": "₱49 - ₱69"},
+            {"category": "Coffee", "name": "Kape Vanilla", "price": "₱49 - ₱69"},
+            {"category": "Coffee", "name": "Coffee Jelly Drink", "price": "₱55 - ₱75"},
+
+            {"category": "Drinks", "name": "Wintermelon Milk Tea", "price": "₱39 - ₱49"},
+            {"category": "Drinks", "name": "Dark Choco", "price": "₱39 - ₱59"},
+            {"category": "Drinks", "name": "Strawberry Fruit Tea", "price": "₱39 - ₱59"},
+            
         ]
     },
     {
@@ -326,9 +448,11 @@ CAFES = [
         "price_range": "₱100–₱599",
         "menu": [
             {"category": "Coffee", "name": "Espresso", "price": "₱100"},
+
             {"category": "Drinks", "name": "Flat White", "price": "₱120"},
             {"category": "Drinks", "name": "Bad Shake", "price": "₱150"},
             {"category": "Drinks", "name": "Dulce de Leche", "price": "₱140"},
+
             {"category": "Food", "name": "Pastries", "price": "₱150"},
         ]
     },
@@ -356,11 +480,18 @@ CAFES = [
         "hours": "Daily: 7:30AM–9PM",
         "price_range": "₱150–₱400",
         "menu": [
-            {"category": "Coffee", "name": "Spanish Latte", "price": "₱130"},
-            {"category": "Drinks", "name": "Chocolate Milkshake", "price": "₱150"},
-            {"category": "Food", "name": "Beef Burger", "price": "₱250"},
-            {"category": "Food", "name": "Truffle Pasta", "price": "₱280"},
-            {"category": "Food", "name": "Breakfast Platter", "price": "₱220"},
+            {"category": "Coffee", "name": "Spanish Latte", "price": "₱130 - ₱180"},
+            {"category": "Coffee", "name": "Caramel Macchiato", "price": "₱140 - ₱190"},
+            {"category": "Coffee", "name": "Mocha Latte", "price": "₱140 - ₱190"},
+            {"category": "Coffee", "name": "Americano", "price": "₱120 - ₱160"},
+
+            {"category": "Drinks", "name": "Chocolate Milkshake", "price": "₱150 - ₱190"},
+            {"category": "Drinks", "name": "Strawberry Soda", "price": "₱110 - ₱150"},
+            {"category": "Drinks", "name": "Matcha Latte", "price": "₱140 - ₱190"},
+
+            {"category": "Food", "name": "Beef Burger", "price": "₱220 - ₱320"},
+            {"category": "Food", "name": "Truffle Pasta", "price": "₱250 - ₱350"},
+            {"category": "Food", "name": "Breakfast Platter", "price": "₱220 - ₱350"},
         ]
     },
     {
@@ -372,10 +503,20 @@ CAFES = [
         "hours": "Daily: 10AM–9PM",
         "price_range": "₱150–₱300",
         "menu": [
-            {"category": "Drinks", "name": "Jcoccino", "price": "₱150"},
-            {"category": "Drinks", "name": "Iced Chocolate", "price": "₱140"},
-            {"category": "Drinks", "name": "Oreo Frappe", "price": "₱160"},
-            {"category": "Food", "name": "Alcapone Donut", "price": "₱75"},
+            {"category": "Coffee", "name": "Jcoccino", "price": "₱120 - ₱170"},
+            {"category": "Coffee", "name": "Cafe Latte", "price": "₱120 - ₱160"},
+            {"category": "Coffee", "name": "Americano", "price": "₱110 - ₱150"},
+            {"category": "Coffee", "name": "Mocha Espresso", "price": "₱130 - ₱170"},
+
+            {"category": "Drinks", "name": "Iced Chocolate", "price": "₱120 - ₱160"},
+            {"category": "Drinks", "name": "Oreo Frappe", "price": "₱140 - ₱190"},
+            {"category": "Drinks", "name": "J.Cool Yogurt Drink", "price": "₱120 - ₱170"},
+            {"category": "Drinks", "name": "Matcha Drink", "price": "₱130 - ₱180"},
+
+            {"category": "Food", "name": "Alcapone Donut", "price": "₱55 - ₱65"},
+            {"category": "Food", "name": "Avocado Dicaprio", "price": "₱55 - ₱65"},
+            {"category": "Food", "name": "Donut Boxes", "price": "₱350 - ₱700"},
+            {"category": "Food", "name": "J.Club Sandwich", "price": "₱140 - ₱220"},
         ]
     },
 ]
